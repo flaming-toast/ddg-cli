@@ -28,12 +28,11 @@ Bash is a Unix shell written by Brian Fox for the GNU Project as a free software
 $ ./ddg hello world
 Your query: hello world
 Hello, World The classic first program a programmer writes in a new programming language.
-
 ```
 
 Issues
 ======
-Working on collapsing the shell and perl script into just one perl script; that way one could include the base dir in their $PATH variable 
+Working on collapsing the shell and perl script into just one perl script; that way one could include the base dir in their `$PATH` variable 
 and omit referring to the path when using the script.
 
 
