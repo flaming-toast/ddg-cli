@@ -1,6 +1,48 @@
-#!/bin/bash
-# grab json response from api.ddg, run it through parsing script parse.pl
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use LWP::Simple;
 
-query=$(echo $@ | sed 's/ /+/g')
-echo "Your query: $@"
-curl --silent "http://api.duckduckgo.com/?q=$query&format=json&pretty=1" | ./parse.pl -
+# Process arguments, construct the query to be passed to the API.
+print "Your query was: @ARGV\n";
+my $query = join("+", @ARGV); 
+
+# grab json response
+my $content = get("http://api.duckduckgo.com/?q=$query&format=json&pretty=1");
+    die "Unable to query DuckDuckGo API" unless defined $content;
+my @content = split("\n", $content);
+
+# Extract definition and AbstractText fields
+foreach (@content) { 
+	if (/\"Definition\" : \"(.*)\",/) {
+		if ($1 =~ m/^[\s]*$/) {
+			next;	
+		}
+		print "-- $1\n"; 
+	}
+	if (/\"AbstractText\" : \"(.*)\"/) {
+		if ($1 =~ m/^[\s]*$/) {
+			next;	
+		}
+		print "-- $1\n"; 
+		last;
+	}
+}
+
+
+
+# old code -- runs through every field.
+#while (<>) {
+#	if (/^[\s{]*$/) {
+#		print "\n";
+#	}
+#	if (/\"([\a-zA-Z-,]*)\" : \"([^\n]*)\"/) {
+#		if ( $2 =~ m/^[\s]*$/ ) {
+#			next;
+#		}
+#	print "$1: " . $2 . "\n";
+#	}
+#else {
+#}
+#	#print &strip($_);
+#}
