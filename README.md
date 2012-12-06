@@ -30,9 +30,13 @@ Your query: hello world
 Hello, World The classic first program a programmer writes in a new programming language.
 ```
 
-Issues
-======
-Working on collapsing the shell and perl script into just one perl script; that way one could include the base dir in their `$PATH` variable 
-and omit referring to the path when using the script.
+One could also their export `PATH` variable to include the directory that contains the perl script, then there's no need to reference the path of the script anymore: 
 
+```txt
+$ export PATH=$(pwd):$PATH # in the base directory 
+$ ddg usenet 
+Your query was: usenet
+-- A messaging system that uses a computer network, especially the Internet, to transfer messages organized in thematic groups.
+-- Usenet is a worldwide distributed Internet discussion system.
+```
 
