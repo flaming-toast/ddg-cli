@@ -14,7 +14,7 @@ http://api.duckduckgo.com/
 
 Dependencies
 =======
-Just curl, and perl. (developed w/ perl 5.16)
+Just Perl, and LWP::Simple. (developed w/ perl 5.16)
 
 Example
 =======
