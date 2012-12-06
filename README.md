@@ -20,6 +20,7 @@ Example
 =======
 
 Still buggy, but works for the most part, here's an example:
+
 ```txt
 $ ./ddg bash shell
 Your query: bash shell
