@@ -32,11 +32,4 @@ Hello, World The classic first program a programmer writes in a new programming 
 
 One could also their export `PATH` variable to include the directory that contains the perl script, then there's no need to reference the path of the script anymore: 
 
-```txt
-$ export PATH=$(pwd):$PATH # in the base directory 
-$ ddg usenet 
-Your query was: usenet
--- A messaging system that uses a computer network, especially the Internet, to transfer messages organized in thematic groups.
--- Usenet is a worldwide distributed Internet discussion system.
-```
-
+![ddg-cli example usage](https://github.com/flaming-toast/ddg-cli/raw/master/img/examples.png)
