@@ -8,7 +8,7 @@ Simply grabs definitions...a command line dictionary(!)
 Sometimes I'm too lazy to open a web browser if I just want a definition of some word/name/etc.
 I just whipped this up to practice perl+shell scripting. : )
 
-Utilizes duckduckgo's isntant answer api: 
+Utilizes duckduckgo's instant answer api: 
 http://api.duckduckgo.com/
 
 
