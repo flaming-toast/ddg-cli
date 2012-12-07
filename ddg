@@ -19,7 +19,7 @@ sub decode {
 	my $result = $_[0];
 	$result = unescape(decode_entities($result));
 	$result =~ s/\\//g;
-	return $result;
+	print "-- " . $result . "\n";
 }
 	
 # Extract definition and AbstractText fields
@@ -28,13 +28,13 @@ foreach (@content) {
 		if ($1 =~ m/^[\s]*$/) {
 			next;	
 		}
-		print "-- " . decode($1) . "\n"; 
+		decode($1);
 	}
 	if (/\"AbstractText\" : \"(.*)\"/) {
 		if ($1 =~ m/^[\s]*$/) {
 			next;	
 		}
-		print "-- " . decode($1) . "\n"; 
+		decode($1);
 		last;
 	}
 }
