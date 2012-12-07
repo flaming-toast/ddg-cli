@@ -33,3 +33,11 @@ Hello, World The classic first program a programmer writes in a new programming 
 One could also their export `PATH` variable to include the directory that contains the perl script, then there's no need to reference the path of the script anymore: 
 
 ![ddg-cli example usage](https://github.com/flaming-toast/ddg-cli/raw/master/img/examples.png)
+
+Known issues
+======
+There may be some trouble with results containing unicode characters. Not a huge issue, but can be an occasional annoyance. Note that your terminal font must also support unicode characters in order to display them. 
+
+TODO
+======
+This started out to be a simple project, but after seeing duckduckgo.com/tty recently I hope I can eventually match that functionality.
