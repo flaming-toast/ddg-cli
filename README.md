@@ -14,7 +14,10 @@ http://api.duckduckgo.com/
 
 Dependencies
 =======
-Just Perl, LWP::Simple, and HTML::Entities. (developed w/ perl 5.16)
+Perl (developed w/ perl 5.16)
+LWP::Simple (6.00)
+HTML::Entities (3.69)
+Unicode::Escape (0.0.2)
 
 Example
 =======
