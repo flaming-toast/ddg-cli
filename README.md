@@ -3,7 +3,7 @@ ddg-cli
 
 Usage
 =======
-Simply grabs definitions...a command line dictionary(!) 
+Simply grabs definitions...you could call it a command line dictionary I suppose.
 
 Sometimes I'm too lazy to open a web browser if I just want a definition of some word/name/etc.
 I just whipped this up to practice perl+shell scripting. : )
@@ -14,7 +14,7 @@ http://api.duckduckgo.com/
 
 Dependencies
 =======
-Just Perl, and LWP::Simple. (developed w/ perl 5.16)
+Just Perl, LWP::Simple, and HTML::Entities. (developed w/ perl 5.16)
 
 Example
 =======
