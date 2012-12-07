@@ -3,8 +3,9 @@ use strict;
 use warnings;
 use LWP::Simple;
 use HTML::Entities;
-use encoding 'utf-8';
 use Unicode::Escape qw/escape unescape/;
+use encoding 'utf-8';
+
 # Process arguments, construct the query to be passed to the API.
 print "Your query was: @ARGV\n";
 my $query = join("+", @ARGV); 
@@ -14,23 +15,26 @@ my $content = get("http://api.duckduckgo.com/?q=$query&format=json&pretty=1");
     die "Unable to query DuckDuckGo API" unless defined $content;
 my @content = split("\n", $content);
 
+sub decode {
+	my $result = $_[0];
+	$result = unescape(decode_entities($result));
+	$result =~ s/\\//g;
+	return $result;
+}
+	
 # Extract definition and AbstractText fields
 foreach (@content) { 
 	if (/\"Definition\" : \"(.*)\",/) {
 		if ($1 =~ m/^[\s]*$/) {
 			next;	
 		}
-		my $result = $1;
-		$result =~ s/\\//g;
-		print "-- " . unescape(decode_entities($result)) . "\n"; 
+		print "-- " . decode($1) . "\n"; 
 	}
 	if (/\"AbstractText\" : \"(.*)\"/) {
 		if ($1 =~ m/^[\s]*$/) {
 			next;	
 		}
-		my $result = $1;
-		$result =~ s/\\//g;
-		print "-- " . unescape(decode_entities($result)) . "\n"; 
+		print "-- " . decode($1) . "\n"; 
 		last;
 	}
 }
