@@ -20,13 +20,17 @@ foreach (@content) {
 		if ($1 =~ m/^[\s]*$/) {
 			next;	
 		}
-		print "-- " . unescape(decode_entities($1)) . "\n"; 
+		my $result = $1;
+		$result =~ s/\\//g;
+		print "-- " . unescape(decode_entities($result)) . "\n"; 
 	}
 	if (/\"AbstractText\" : \"(.*)\"/) {
 		if ($1 =~ m/^[\s]*$/) {
 			next;	
 		}
-		print "-- " . unescape(decode_entities($1)) . "\n"; 
+		my $result = $1;
+		$result =~ s/\\//g;
+		print "-- " . unescape(decode_entities($result)) . "\n"; 
 		last;
 	}
 }
