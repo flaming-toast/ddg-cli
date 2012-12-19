@@ -1,10 +1,14 @@
 ddg-cli
+version: 0.01
 A command line interface to DuckDuckGo
 Author: jyu <jyu@ftoast.org>
 
+git-repo: https://github.com/flaming-toast/ddg-cli
+tar archive: http://ftoast.org/plain/hacks/ddg-cli-0.01.tar.gz
+
+
 INSTALL GUIDELINES
 =====================================
-
 This is a simple perl application composed of three perl scripts, and a config file (all listed in MANIFEST): 
 ddg -- main wrapper script
 scripts/results -- screen scraping duckduckgo.com/html for search results
@@ -17,7 +21,7 @@ No need to "build anything." Just git clone the repo to your desired directory, 
 download the compressed tar archive from the http://ftoast.org and unpack it. The 
 Makefile.PL is there to save you the pain of figuring out dependencies. 
 
-First, Run perl Makefile.PL to figure out missing dependencies (namely, missing perl modules 
+First, Run `perl Makefile.PL` to figure out missing dependencies (namely, missing perl modules 
 needed to run the application. Use cpanm or the like to install the missing modules, 
 and you're good to go!)
 
@@ -84,7 +88,7 @@ of implementing a feature in this application, and whatnot) please shoot me an e
 In particular, if anyone has any suggestions for me to package/distribute this application in a more standard/formal/better way (because my perl book has no answers, and the internet searches have failed me) PLEASE. EMAIL. ME. 
 
 
-Thanks!
+Thanks, enjoy!
 
 
 
