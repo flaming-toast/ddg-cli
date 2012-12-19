@@ -44,7 +44,7 @@ If max_results is not set, the client will just display the first page of result
 USING THE APPLICATION
 =======================================
 General usage:
-ddg [-rmb] QUERY
+ddg [-r result#] [-m maxresult#] [-b browser-command] QUERY
 Options will override parameters specified in ddg.conf
 
 To search:
