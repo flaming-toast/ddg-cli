@@ -1,20 +1,12 @@
-use ExtUtils::MakeMaker;
-
-WriteMakefile(
-	'NAME'          => 'ddg-cli',
-	'VERSION'       => '0.01',
-
-	'EXE_FILES'     =>  [ 'ddg', 'scripts/results', 'scripts/zci' ],
-
-	'PREREQ_PM'     => { 
-		'LWP::Simple' => 0,
-		'WWW::DuckDuckGo' => 0.014,
-		'Term::Cap' => 0,
-		'HTML::Entities' => 0,
-		'Unicode::Escape' => 0,
-		'HTML::DOM' => 0,
-		'Getopt::Std' => 0,
-		},
-
-	'INSTALLSCRIPT' => "/home/jyu/ddg-cli",
-);
+use inc::Module::Install;
+name 'ddg-cli';
+version 0.01;
+license 'perl';
+requires		'LWP::Simple' => 0;
+requires		'WWW::DuckDuckGo' => 0.014;
+requires		'Term::Cap' => 0;
+requires		'HTML::Entities' => 0;
+requires		'Unicode::Escape' => 0;
+requires		'HTML::DOM' => 0;
+requires		'Getopt::Std' => 0;
+WriteAll;
