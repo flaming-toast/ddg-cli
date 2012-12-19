@@ -1,0 +1,11 @@
+#!/bin/bash
+
+## Run _once_ in the install directory ##
+if grep -q '^install_dir=' ./ddg.conf ; then
+	echo "install_dir already set in ddg.conf!"
+else
+	echo "Setting base install directory in ddg.conf...."
+	echo "install_dir='$(pwd)'" >> ./ddg.conf
+	echo "Done."
+fi
+

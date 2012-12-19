@@ -1,0 +1,86 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Term::Cap;
+use LWP::Simple;
+use HTML::Entities qw/decode_entities/;
+use Unicode::Escape qw/escape unescape/;
+use encoding 'utf-8';
+use HTML::DOM;
+use Getopt::Std;
+
+
+my $debug = 0;
+my $query;
+my @results;
+our($opt_m, $opt_r, $opt_b);
+getopts('m:r:b:');
+
+# handle go-to cases
+if (defined $opt_r) {
+	if (! defined $opt_b) {
+		exit (1);
+	}
+	open(RESULTS, 'data');
+	while (<RESULTS>) {
+		push(@results, $_);
+	}
+	my $url = $results[$opt_r-1];
+        chomp($url);	
+	print "Loading result #$opt_r {" . $url . "} in specified browser ($opt_b)....";
+	system("$opt_b $url");
+	exit(0);
+}
+
+# search case
+
+$query = $ARGV[0];
+
+my $t = Tgetent Term::Cap { TERM => undef };
+my ($norm, $under, $bold) = map { $t->Tputs($_,1) } qw/me us md/;
+#print "Your query was: $query\n\n";
+$query =~ s/[\s]/+/g;
+
+# Scrape/parse the results page (uses duckduckgo html version)
+my $content = get("http://duckduckgo.com/html/?q=$query&format=json&pretty=1");
+    die "Unable to query DuckDuckGo API" unless defined $content;
+    if ($debug) { print $content; }
+my @content = split("\n", $content);
+
+my $dom_tree = new HTML::DOM; # empty tree
+$dom_tree->write($content);
+$dom_tree->close;
+
+my $num = 1;  # Label each result with number, starting with 1.
+print "${bold}RESULTS SECTION${norm}\n\n";
+foreach my $item ($dom_tree->getElementsByClassName('links_main')) { 
+	
+	if (defined $opt_m and $num > $opt_m) { # max results option was set
+		last;
+}
+	foreach my $item2 ($item->getElementsByTagName('a')) {
+			my $text = unescape(decode_entities($item2->innerHTML));
+			$text =~ s/\<b\>/${bold}/g;
+			$text =~ s/\<\/b\>/${norm}/g;
+			print "${under}Result #$num${norm}: " . $text . "\n";
+			push(@results,$item2->attr("href"));
+			print "${under}Link${norm}:" . $item2->attr("href") . "\n";
+			$num++;
+		}
+	foreach my $item3 ($item->getElementsByClassName('snippet')) {
+			my $text = unescape(decode_entities($item3->innerHTML));
+			$text =~ s/\<b\>/${bold}/g;
+			$text =~ s/\<\/b\>/${norm}/g;
+		print "$text";
+
+	}
+	print "\n\n";
+}
+open(DATA, '>data'); 
+for (my $i = 0; $i < @results; $i++) {
+	print DATA "$results[$i]\n";
+}
+
+

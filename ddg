@@ -1,58 +1,46 @@
-#!/usr/bin/env perl
-use strict;
-use warnings;
-use LWP::Simple;
-use HTML::Entities;
-use Unicode::Escape qw/escape unescape/;
-use encoding 'utf-8';
+#!/usr/bin/env bash
 
-# Process arguments, construct the query to be passed to the API.
-print "Your query was: @ARGV\n";
-my $query = join("+", @ARGV); 
-
-# grab json response
-my $content = get("http://api.duckduckgo.com/?q=$query&format=json&pretty=1");
-    die "Unable to query DuckDuckGo API" unless defined $content;
-my @content = split("\n", $content);
-
-sub decode {
-	my $result = $_[0];
-	$result = unescape(decode_entities($result));
-	$result =~ s/\\//g;
-	print "-- " . $result . "\n";
-}
-	
-# Extract definition and AbstractText fields
-foreach (@content) { 
-	if (/\"Definition\" : \"(.*)\",/) {
-		if ($1 =~ m/^[\s]*$/) {
-			next;	
-		}
-		decode($1);
-	}
-	if (/\"AbstractText\" : \"(.*)\"/) {
-		if ($1 =~ m/^[\s]*$/) {
-			next;	
-		}
-		decode($1);
-		last;
-	}
-}
+# main wrapper script
 
 
+. ddg.conf
 
-# old code -- runs through every field.
-#while (<>) {
-#	if (/^[\s{]*$/) {
-#		print "\n";
-#	}
-#	if (/\"([\a-zA-Z-,]*)\" : \"([^\n]*)\"/) {
-#		if ( $2 =~ m/^[\s]*$/ ) {
-#			next;
-#		}
-#	print "$1: " . $2 . "\n";
-#	}
-#else {
-#}
-#	#print &strip($_);
-#}
+while getopts "b:r:m:h" Option ; do
+	case $Option in 
+		b) browser=$OPTARG ; echo "Browser: $browser" ;; # Overrides browser option specified in config 
+		r) result=$OPTARG ; echo "Result number: $result" ;; # Go to result # using the browser specified
+		m) max_results=$OPTARG ; echo "Max results: $max_results" ;;  # maximum number of results to display
+	        h) echo -e "DuckDuckGo Commandline Interface \n\n\
+		Usage: ddg [OPTION] QUERY \n \
+		Valid (optional) options: \n
+        	-b BROWSER \n \
+		-m MAX RESULT # \n \
+		-r RESULT# (open result # in browser) \n \
+		-h Show this help message" ; exit 0 ;;	
+	esac
+done
+	shift $(($OPTIND - 1))
+
+if [[ ! -z $result && ! -z $browser ]] ; then # Handle this first. Ignore default behavior.
+	${install_dir}/scripts/results -b $browser -r $result
+	exit 0
+elif [[ -z $browser ]] ; then
+	echo -e "Something went wrong, looks like there's a missing argument.\nPlease specifiy a result number AND a browser to use in either the configuration file or as a command line argument to -b"
+	echo "Example usage: ddg -r 2 -b 'google-chrome' # Go to result #2 using google-chrome"
+	echo "Example usage: ddg -r 2 # If you already have a browser specified in ddg.conf"
+	exit 1
+fi
+
+if [[ -z $1 ]] ; then
+	echo -e "DuckDuckGo CLI\nUsage: ddg [-b browser -r result # -m max results] QUERY"
+	echo -e "Remember to quote your query."
+	exit 1;
+fi
+if [[ ! -z $max_results  ]] ; then
+		${install_dir}/scripts/zci $1
+		${install_dir}/scripts/results -m $max_results -b $browser "$@"
+
+else 
+		${install_dir}/scripts/zci $1
+		${install_dir}/scripts/results -b $browser "$@"
+fi

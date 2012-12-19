@@ -3,13 +3,16 @@ ddg-cli
 
 Usage
 =======
-Simply grabs definitions...you could call it a command line dictionary I suppose.
+ddg-cli -- DuckDuckGo Commandline Interface.
+Inspired by http://duckduckgo.com/tty
 
-Sometimes I'm too lazy to open a web browser if I just want a definition of some word/name/etc.
-I just whipped this up to practice perl+shell scripting. : )
+Access DuckDuckGo search results and instant answers through your terminal.
 
 Utilizes duckduckgo's instant answer api: 
 http://api.duckduckgo.com/
+
+DuckDuckGo does not provide a full-results API for understandable reasons. 
+To grab actual web results, very simple screen scraping with HTML::DOM is done.
 
 
 Dependencies
@@ -22,24 +25,17 @@ HTML::Entities (3.69)
 
 Unicode::Escape (0.0.2)
 
+Configuration
+=======
+
+From the base directory, run ./configure to initialize proper variables that will be used in the application.
+Edit ddg.conf to suit your needs (i.e., set your browser, max results, etc). See ddg.conf for more details.
 
 Example
 =======
 
-Still buggy, but works for the most part, here's an example:
+One could also their export `PATH` variable to include the directory that contains the perl script, then there's no need to reference the path of the script anymore.
 
-```txt
-$ ./ddg bash shell
-Your query: bash shell
-Bash is a Unix shell written by Brian Fox for the GNU Project as a free software replacement for the Bourne shell.
-$ ./ddg hello world
-Your query: hello world
-Hello, World The classic first program a programmer writes in a new programming language.
-```
-
-One could also their export `PATH` variable to include the directory that contains the perl script, then there's no need to reference the path of the script anymore: 
-
-![ddg-cli example usage](https://github.com/flaming-toast/ddg-cli/raw/master/img/examples.png)
 
 Known issues
 ======
@@ -47,4 +43,4 @@ There may be some trouble with results containing unicode characters. Not a huge
 
 TODO
 ======
-This started out to be a simple project, but after seeing duckduckgo.com/tty recently I hope I can eventually match that functionality.
+Error handling...lots of it.
