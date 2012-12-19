@@ -5,7 +5,7 @@ Author: jyu <jyu@ftoast.org>
 INSTALL GUIDELINES
 =====================================
 
-This is a simple perl application composed of three perl scripts (all listed in MANIFEST): 
+This is a simple perl application composed of three perl scripts, and a config file (all listed in MANIFEST): 
 ddg -- main wrapper script
 scripts/results -- screen scraping duckduckgo.com/html for search results
 scripts/zci -- query DuckDuckGo's instant answer API
@@ -27,6 +27,7 @@ Ensure that the scripts maintain their relative locations in the base directory 
 Lastly, you may want to modify your PATH variable to include the directory containing the perl scripts 
 so you can use the application without referring to its path. 
 
+
 CONFIGURATION
 ========================================
 Configuration parameters are located and can be modified in ./ddg.conf. 
@@ -34,6 +35,7 @@ You may wish to configure the client to display a maximum number of results or s
 a search result.
 The 'browser' parameter is REQUIRED and the 'max_results' parameter is OPTIONAL. 
 If max_results is not set, the client will just display the first page of results.
+
 
 USING THE APPLICATION
 =======================================
@@ -73,10 +75,14 @@ After running a search, run ddg -r <result #> to access that result in a browser
 As of this point, the application cannot handle multiple searches (i.e., the -r option will refer 
 to your *most recent* search)
 
+
 BUG REPORTS AND SUCH
 ========================================
 I am no perl monk and I welcome any feedback. If you find any bugs, or have any suggestions (perhaps a better way
 of implementing a feature in this application, and whatnot) please shoot me an email at jyu@ftoast.org.
+
+In particular, if anyone has any suggestions for me to package/distribute this application in a more standard/formal/better way (because my perl book has no answers, and the internet searches have failed me) PLEASE. EMAIL. ME. 
+
 
 Thanks!
 
