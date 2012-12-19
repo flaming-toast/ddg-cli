@@ -35,6 +35,36 @@ a search result.
 The 'browser' parameter is REQUIRED and the 'max_results' parameter is OPTIONAL. 
 If max_results is not set, the client will just display the first page of results.
 
+USING THE APPLICATION
+=======================================
+General usage:
+ddg [-rmb] QUERY
+Options will override parameters specified in ddg.conf
+
+To search:
+ddg 'query'
+Be sure to quote your query. 
+
+To view a result: 
+ddg -r <result #>
+
+To override specified browser in ddg.conf
+ddg -b 'google-chrome' 'query' # if I want to use google-chrome, for example
+
+To specify max results:
+ddg -m 10 'query' # Only 10 search results will be displayed
+
+Don't want to flood your terminal with results? How about usin' a pager:
+ddg 'query' | most
+ddg 'query' | less # There seems to be text formatting issues with less, beware
+
+Be creative and use pipes/redirection:
+ddg -m 10 'query' | grep 'my website' # Let's see if my website is listed in the top 10 results!
+ddg 'query' | grep '[use some crazy regex zomg]$&#()!@'
+ddg 'query' > results
+etc........
+
+
 VIEWING RESULTS
 ========================================
 When you conduct a search, search results will be labeled numerically so that you can
@@ -49,13 +79,6 @@ I am no perl monk and I welcome any feedback. If you find any bugs, or have any 
 of implementing a feature in this application, and whatnot) please shoot me an email at jyu@ftoast.org.
 
 Thanks!
-
-
-
-
-
-
-
 
 
 
