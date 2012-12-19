@@ -1,0 +1,10 @@
+configure			Run this in the base directory. (./configure)
+data/current_search		Temp file used by the application
+ddg				The core script
+ddg.conf			Configuration file
+Makefile.PL			Lists missing deps. Use cpanm or the like to install deps.
+MANIFEST			This list of files.
+INSTALL				Install instructions
+README.md			README
+scripts/results			script used by ./ddg 
+scripts/zci			script used by ./ddg

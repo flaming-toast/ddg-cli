@@ -1,0 +1,61 @@
+ddg-cli
+A command line interface to DuckDuckGo
+Author: jyu <jyu@ftoast.org>
+
+INSTALL GUIDELINES
+=====================================
+
+This is a simple perl application composed of three perl scripts (all listed in MANIFEST): 
+ddg -- main wrapper script
+scripts/results -- screen scraping duckduckgo.com/html for search results
+scripts/zci -- query DuckDuckGo's instant answer API
+
+
+HOW TO INSTALL
+======================================
+No need to "build anything." Just git clone the repo to your desired directory, or 
+download the compressed tar archive from the http://ftoast.org and unpack it. The 
+Makefile.PL is there to save you the pain of figuring out dependencies. 
+
+First, Run perl Makefile.PL to figure out missing dependencies (namely, missing perl modules 
+needed to run the application. Use cpanm or the like to install the missing modules, 
+and you're good to go!)
+
+Second, run configure to set the install base path the script will use. This is necessary. 
+Ensure that the scripts maintain their relative locations in the base directory (i.e., don't touch anything.)
+
+Lastly, you may want to modify your PATH variable to include the directory containing the perl scripts 
+so you can use the application without referring to its path. 
+
+CONFIGURATION
+========================================
+Configuration parameters are located and can be modified in ./ddg.conf. 
+You may wish to configure the client to display a maximum number of results or set the browser to use when selecting
+a search result.
+The 'browser' parameter is REQUIRED and the 'max_results' parameter is OPTIONAL. 
+If max_results is not set, the client will just display the first page of results.
+
+VIEWING RESULTS
+========================================
+When you conduct a search, search results will be labeled numerically so that you can
+refer to them and open the link in the specified browser (see ddg.conf).
+After running a search, run ddg -r <result #> to access that result in a browser. 
+As of this point, the application cannot handle multiple searches (i.e., the -r option will refer 
+to your *most recent* search)
+
+BUG REPORTS AND SUCH
+========================================
+I am no perl monk and I welcome any feedback. If you find any bugs, or have any suggestions (perhaps a better way
+of implementing a feature in this application, and whatnot) please shoot me an email at jyu@ftoast.org.
+
+Thanks!
+
+
+
+
+
+
+
+
+
+
