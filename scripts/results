@@ -25,7 +25,6 @@ our($opt_m, $opt_r, $opt_b);
 getopts('m:r:b:');
 
 
-
 ### HANDLE GO-TO CASES ###
 # When passed the -r option and numeric argument (the number of the search result),
 # a search MUST have been performed beforehand before you can invoke the specified browser with the desired url.
@@ -43,7 +42,7 @@ if (defined $opt_r) {
 	my $url = $results[$opt_r-1];
         chomp($url);	
 	print "Loading result #$opt_r {" . $url . "} in specified browser ($opt_b)....";
-	system("$opt_b $url");
+	system("$opt_b $url &");
 	exit(0);
 }
 

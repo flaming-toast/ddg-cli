@@ -6,7 +6,6 @@ use warnings;
 use Term::Cap;
 use WWW::DuckDuckGo;
 use HTML::Entities qw/decode_entities/;
-use HTML::Strip;
 use Unicode::Escape qw/escape unescape/;
 use encoding 'utf-8';
 
@@ -14,7 +13,6 @@ use encoding 'utf-8';
 my $duck = WWW::DuckDuckGo->new;
 my $debug = 0;
 my $query = join(' ', @ARGV); 
-my $hs = HTML::Strip->new();
 
 # Fancy terminal text formatting (underlining, bolding)
 my $t = Tgetent Term::Cap { TERM => undef };

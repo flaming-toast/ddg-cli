@@ -20,6 +20,11 @@ while getopts "b:r:m:h" Option ; do
 done
 	shift $(($OPTIND - 1))
 
+if [[ -z $install_dir ]] ; then 
+	echo "Please run the configure script first."
+	exit 1
+fi
+
 if [[ ! -z $result && ! -z $browser ]] ; then # Handle this first. Ignore default behavior.
 	${install_dir}/scripts/results -b $browser -r $result
 	exit 0
