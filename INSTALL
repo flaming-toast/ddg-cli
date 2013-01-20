@@ -11,7 +11,7 @@ INSTALL GUIDELINES
 =====================================
 This is a simple perl application composed of three perl scripts, and a config file (all listed in MANIFEST): 
 ddg -- main wrapper script
-scripts/results -- screen scraping duckduckgo.com/html for search results
+scripts/results -- parsing duckduckgo.com/html for search results
 scripts/zci -- query DuckDuckGo's instant answer API
 
 
