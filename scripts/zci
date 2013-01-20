@@ -3,37 +3,31 @@
 
 use strict;
 use warnings;
-use WWW::DuckDuckGo;
 use Term::Cap;
+use WWW::DuckDuckGo;
 use HTML::Entities qw/decode_entities/;
+use HTML::Strip;
 use Unicode::Escape qw/escape unescape/;
 use encoding 'utf-8';
 
+
 my $duck = WWW::DuckDuckGo->new;
 my $debug = 0;
-my $query;
+my $query = join(' ', @ARGV); 
+my $hs = HTML::Strip->new();
 
-# construct query to pass to the API from command line arguments
-if (@ARGV > 1) {
-for my $argument (@ARGV) {
-	$query .= "$argument ";
-}
-} else {
-	$query = $ARGV[0];
-}
-
-
-# Fancy terminal text formatting (underlining)
+# Fancy terminal text formatting (underlining, bolding)
 my $t = Tgetent Term::Cap { TERM => undef };
 my ($norm, $under, $bold) = map { $t->Tputs($_,1) } qw/me us md/;
+
+
+print "Your query was: ${bold}$query${norm}\n\n";
 
 # retrieve zero-click information
 my $zci = $duck->zeroclickinfo("$query");
 
-print "Your query was: ${bold}$query${norm}\n\n";
 # print instant answer results 
 print "${bold}DUCKDUCKGO -- INSTANT ANSWER SECTION${norm}\n\n";
-
 print "${under}Heading$norm: " . $zci->heading."\n\n" if $zci->has_heading;
 print "${under}The answer is$norm: " . $zci->answer . "\n" if $zci->has_answer;
 
@@ -41,8 +35,8 @@ if ($zci->has_results) {
 	print "${under}Results$norm: \n";
 	foreach my $item (@{$zci->results}) {
 		print "\t First url: " . $item->first_url."\n" if $item->has_first_url;
-		print "\t Result: " . $item->result."\n" if $item->has_result;
 		print "\t Text: " .$item->text."\n" if $item->has_text;
+#		print "\t Result: " . $item->result."\n" if $item->has_result; # Usually just html version the above
 	}
 	print "\n";
 }

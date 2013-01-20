@@ -2,7 +2,6 @@
 
 # main wrapper script
 
-
 . ddg.conf
 
 while getopts "b:r:m:h" Option ; do
@@ -31,16 +30,17 @@ elif [[ -z $browser ]] ; then
 	exit 1
 fi
 
-if [[ -z $1 ]] ; then
+if [[ -z $@ ]] ; then
 	echo -e "DuckDuckGo CLI\nUsage: ddg [-b browser -r result # -m max results] QUERY"
 	echo -e "Remember to quote your query."
 	exit 1;
 fi
+
 if [[ ! -z $max_results  ]] ; then
-		${install_dir}/scripts/zci $1
+		${install_dir}/scripts/zci "$@"
 		${install_dir}/scripts/results -m $max_results -b $browser "$@"
 
 else 
-		${install_dir}/scripts/zci $1
+		${install_dir}/scripts/zci "$@" 
 		${install_dir}/scripts/results -b $browser "$@"
 fi

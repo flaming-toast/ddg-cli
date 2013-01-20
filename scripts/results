@@ -3,30 +3,43 @@
 use strict;
 use warnings;
 
+use Getopt::Std;
 use Term::Cap;
 use LWP::Simple;
 use HTML::Entities qw/decode_entities/;
 use Unicode::Escape qw/escape unescape/;
 use encoding 'utf-8';
 use HTML::DOM;
-use Getopt::Std;
+use FindBin qw($Bin);
 
 
 my $debug = 0;
 my $query;
 my @results;
+my $result_urls_path = "$Bin/../data/current_search"; 
+# terminal underlining and bolding
+my $t = Tgetent Term::Cap { TERM => undef };
+my ($norm, $under, $bold) = map { $t->Tputs($_,1) } qw/me us md/;
+# command-line options
 our($opt_m, $opt_r, $opt_b);
 getopts('m:r:b:');
 
-# handle go-to cases
+
+
+### HANDLE GO-TO CASES ###
+# When passed the -r option and numeric argument (the number of the search result),
+# a search MUST have been performed beforehand before you can invoke the specified browser with the desired url.
+
 if (defined $opt_r) {
-	if (! defined $opt_b) {
-		exit (1);
+	# browser is not defined, exit
+	if (! defined $opt_b) { 
+		die "Browser is not defined; check ddg.conf or use the -b option!";
 	}
-	open(RESULTS, 'data/current_search');
-	while (<RESULTS>) {
-		push(@results, $_);
+	open(RESULT, '<', $result_urls_path) or die "Can't open '$result_urls_path' [$!]\n";
+	while (<RESULT>) {
+		push(@results, $_); # populate array with list of url's in data/current_search
 	}
+	if ($opt_r > $#results) { die "Invalid result number"; }
 	my $url = $results[$opt_r-1];
         chomp($url);	
 	print "Loading result #$opt_r {" . $url . "} in specified browser ($opt_b)....";
@@ -34,43 +47,45 @@ if (defined $opt_r) {
 	exit(0);
 }
 
-# search case
 
+### HANDLE SEARCH CASE ###
+# screen scrape/parse the results page (uses duckduckgo html version)
+#
+open(my $fh, '>', $result_urls_path) or die "Can't write to file '$result_urls_path' [$!]\n";
 $query = $ARGV[-1];
+$query =~ s/[\s]/+/g; 
 
-my $t = Tgetent Term::Cap { TERM => undef };
-my ($norm, $under, $bold) = map { $t->Tputs($_,1) } qw/me us md/;
-#print "Your query was: $query\n\n";
-$query =~ s/[\s]/+/g;
-
-# Scrape/parse the results page (uses duckduckgo html version)
+ 
 my $content = get("http://duckduckgo.com/html/?q=$query&format=json&pretty=1");
-    die "Unable to query DuckDuckGo API" unless defined $content;
+    die "Unable to connect to DuckDuckGo" unless defined $content;
     if ($debug) { print $content; }
-my @content = split("\n", $content);
+#my @content = split("\n", $content);
 
 my $dom_tree = new HTML::DOM; # empty tree
 $dom_tree->write($content);
 $dom_tree->close;
 
-my $num = 1;  # Label each result with number, starting with 1.
+
+# BEGIN PRINTING RESULTS SECTION
+my $num = 1;  # Label each result with a number, starting with 1.
+
 print "${bold}RESULTS SECTION${norm}\n\n";
-foreach my $item ($dom_tree->getElementsByClassName('links_main')) { 
+foreach my $result ($dom_tree->getElementsByClassName('links_main')) { 
 	
 	if (defined $opt_m and $num > $opt_m) { # max results option was set
 		last;
 }
-	foreach my $item2 ($item->getElementsByTagName('a')) {
-			my $text = unescape(decode_entities($item2->innerHTML));
+	foreach my $link($result->getElementsByTagName('a')) {
+			my $text = unescape(decode_entities($link->innerHTML));
 			$text =~ s/\<b\>/${bold}/g;
 			$text =~ s/\<\/b\>/${norm}/g;
 			print "${under}Result #$num${norm}: " . $text . "\n";
-			push(@results,$item2->attr("href"));
-			print "${under}Link${norm}:" . $item2->attr("href") . "\n";
+			print ${fh} $link->attr("href")."\n";
+			print "${under}Link${norm}:" . $link->attr("href") . "\n";
 			$num++;
 		}
-	foreach my $item3 ($item->getElementsByClassName('snippet')) {
-			my $text = unescape(decode_entities($item3->innerHTML));
+	foreach my $description ($result->getElementsByClassName('snippet')) {
+			my $text = unescape(decode_entities($description->innerHTML));
 			$text =~ s/\<b\>/${bold}/g;
 			$text =~ s/\<\/b\>/${norm}/g;
 		print "$text";
@@ -78,9 +93,3 @@ foreach my $item ($dom_tree->getElementsByClassName('links_main')) {
 	}
 	print "\n\n";
 }
-open(DATA, '>data/current_search'); 
-for (my $i = 0; $i < @results; $i++) {
-	print DATA "$results[$i]\n";
-}
-close(DATA);
-
